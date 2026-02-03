@@ -1,0 +1,162 @@
+[
+  {
+    "id": "2410.21276v1",
+    "title": "A Survey on LLM-based Agents: Tool Learning",
+    "authors": ["Zhenyu Wu", "Zhiheng Xi", "Tao Gui", "Qi Zhang", "Xuanjing Huang"],
+    "abstract": "Tool learning has emerged as a critical research area in enabling large language models (LLMs) to interact with external environments and accomplish complex tasks. This survey provides a comprehensive review of tool learning with LLM-based agents, covering the fundamental concepts, key techniques, and recent advances. We systematically categorize existing approaches into tool-use understanding, tool creation, and tool-use optimization, and discuss their respective challenges and solutions.",
+    "published": "2024-10-28T12:00:00Z",
+    "url": "https://arxiv.org/abs/2410.21276"
+  },
+  {
+    "id": "2310.04406v2",
+    "title": "AgentTuning: Enabling Generalized Agent Abilities for LLMs",
+    "authors": ["Aohan Zeng", "Mingdao Liu", "Rui Lu", "Bowen Wang", "Xiao Liu", "Yuxiao Dong", "Jie Tang"],
+    "abstract": "Open-sourced LLMs have demonstrated strong general capabilities but lack the ability to act as agents. This paper presents AgentTuning, a method to improve the agent abilities of LLMs while maintaining their general LLM capabilities. We construct a dataset of agent trajectories covering various tasks and fine-tune Llama 2 series using a hybrid instruction-tuning strategy. The resulting AgentLM models show substantially improved agent capabilities.",
+    "published": "2023-10-06T17:59:58Z",
+    "url": "https://arxiv.org/abs/2310.04406"
+  },
+  {
+    "id": "2312.10997v3",
+    "title": "Practices for Governing Agentic AI Systems",
+    "authors": ["OpenAI"],
+    "abstract": "Agentic AI systems—AI systems that can pursue complex goals with limited direct supervision—are becoming more capable and more common. This paper discusses practices for the governance of agentic AI systems. We offer a definition of agentic AI systems, discuss why they present new challenges, and describe a set of practices that can help developers and deployers of these systems govern them effectively.",
+    "published": "2023-12-18T18:48:07Z",
+    "url": "https://arxiv.org/abs/2312.10997"
+  },
+  {
+    "id": "2401.04088v2",
+    "title": "Mixtral of Experts",
+    "authors": ["Albert Q. Jiang", "Alexandre Sablayrolles", "Antoine Roux", "Arthur Mensch", "et al."],
+    "abstract": "We introduce Mixtral 8x7B, a Sparse Mixture of Experts (SMoE) language model. Mixtral has the same architecture as Mistral 7B, with the difference that each layer is composed of 8 feedforward blocks (i.e. experts). For every token, a router network selects two experts to process the token and combine their output. Mixtral outperforms Llama 2 70B on most benchmarks with 6x faster inference.",
+    "published": "2024-01-08T17:38:57Z",
+    "url": "https://arxiv.org/abs/2401.04088"
+  },
+  {
+    "id": "2403.03507v2",
+    "title": "Anthropic's Claude 3 Technical Report",
+    "authors": ["Anthropic"],
+    "abstract": "We present Claude 3, a family of highly capable multimodal models. Claude 3 Opus, our most intelligent model, outperforms its peers on most evaluations, including expert knowledge, math, and reasoning. Claude 3 Haiku is our fastest and most compact model. All Claude 3 models show strong performance on vision tasks and demonstrate reduced rates of incorrect refusals compared to Claude 2.",
+    "published": "2024-03-04T18:00:00Z",
+    "url": "https://arxiv.org/abs/2403.03507"
+  },
+  {
+    "id": "2305.10601v2",
+    "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+    "authors": ["Shunyu Yao", "Dian Yu", "Jeffrey Zhao", "Izhak Shafran", "Thomas L. Griffiths", "Yuan Cao", "Karthik Narasimhan"],
+    "abstract": "Language models are increasingly being deployed for general problem solving, but they still struggle on tasks that require deliberate planning and exploration. We introduce a new framework, Tree of Thoughts (ToT), which enables LLMs to explore coherent units of text ('thoughts') that serve as intermediate steps toward problem solving. ToT allows LMs to self-evaluate choices and look ahead or backtrack when necessary.",
+    "published": "2023-05-17T13:05:45Z",
+    "url": "https://arxiv.org/abs/2305.10601"
+  },
+  {
+    "id": "2210.03629v3",
+    "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+    "authors": ["Shunyu Yao", "Jeffrey Zhao", "Dian Yu", "Nan Du", "Izhak Shafran", "Karthik Narasimhan", "Yuan Cao"],
+    "abstract": "While large language models (LLMs) have demonstrated impressive performance on language understanding and reasoning tasks, their ability to act and interact with environments remains limited. We propose ReAct, a general paradigm to synergize reasoning and acting with language models. ReAct prompts LLMs to generate reasoning traces and task-specific actions in an interleaved manner.",
+    "published": "2022-10-06T17:59:24Z",
+    "url": "https://arxiv.org/abs/2210.03629"
+  },
+  {
+    "id": "2305.14314v2",
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "authors": ["Tim Dettmers", "Artidoro Pagnoni", "Ari Holtzman", "Luke Zettlemoyer"],
+    "abstract": "We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters (LoRA).",
+    "published": "2023-05-23T17:50:00Z",
+    "url": "https://arxiv.org/abs/2305.14314"
+  },
+  {
+    "id": "2307.09288v2",
+    "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+    "authors": ["Hugo Touvron", "Louis Martin", "Kevin Stone", "Peter Albert", "et al."],
+    "abstract": "We present Llama 2, a collection of pretrained and fine-tuned large language models ranging from 7B to 70B parameters. Our fine-tuned LLMs, called Llama 2-Chat, are optimized for dialogue use cases. Llama 2-Chat models outperform open-source chat models on most benchmarks we tested, and based on human evaluations for helpfulness and safety.",
+    "published": "2023-07-18T17:59:58Z",
+    "url": "https://arxiv.org/abs/2307.09288"
+  },
+  {
+    "id": "2309.16609v2",
+    "title": "Mistral 7B",
+    "authors": ["Albert Q. Jiang", "Alexandre Sablayrolles", "Arthur Mensch", "Chris Bamford", "et al."],
+    "abstract": "We introduce Mistral 7B, a 7-billion-parameter language model engineered for superior performance and efficiency. Mistral 7B outperforms the best open 13B model (Llama 2) across all evaluated benchmarks, and the best released 34B model (Llama 1) in reasoning, mathematics, and code generation. We also provide a model fine-tuned to follow instructions, Mistral 7B Instruct.",
+    "published": "2023-09-28T14:45:34Z",
+    "url": "https://arxiv.org/abs/2309.16609"
+  },
+  {
+    "id": "2305.18290v2",
+    "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+    "authors": ["Rafael Rafailov", "Archit Sharma", "Eric Mitchell", "Stefano Ermon", "Christopher D. Manning", "Chelsea Finn"],
+    "abstract": "We present Direct Preference Optimization (DPO), an algorithm that directly optimizes for the policy best satisfying preferences without explicit reward modeling or reinforcement learning. DPO is stable, performant, and computationally lightweight, eliminating the need for sampling from the LM during fine-tuning or significant hyperparameter tuning.",
+    "published": "2023-05-29T17:57:46Z",
+    "url": "https://arxiv.org/abs/2305.18290"
+  },
+  {
+    "id": "2402.03300v2",
+    "title": "Self-Discover: Large Language Models Self-Compose Reasoning Structures",
+    "authors": ["Pei Zhou", "Jay Pujara", "Xiang Ren", "Xinyun Chen", "Heng-Tze Cheng", "Quoc V. Le", "Ed H. Chi", "Denny Zhou", "Swaroop Mishra", "Huaixiu Steven Zheng"],
+    "abstract": "We introduce Self-Discover, a framework for LLMs to self-compose reasoning structures to tackle complex reasoning tasks. Self-Discover first selects relevant reasoning modules and then composes them into an explicit reasoning structure. This self-discovered structure guides the LLM's decoding process. Self-Discover substantially improves performance on challenging reasoning benchmarks.",
+    "published": "2024-02-05T18:59:54Z",
+    "url": "https://arxiv.org/abs/2402.03300"
+  },
+  {
+    "id": "2310.06825v2",
+    "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection",
+    "authors": ["Akari Asai", "Zeqiu Wu", "Yizhong Wang", "Avirup Sil", "Hannaneh Hajishirzi"],
+    "abstract": "We introduce Self-RAG, a framework that trains an LM to adaptively retrieve, generate, and reflect on both the retrieved passages and its own generation. Self-RAG improves the quality and factuality of LLMs by training a single arbitrary LM to learn to retrieve, generate, and critique its own output. Our framework outperforms state-of-the-art retrieval-augmented LLMs.",
+    "published": "2023-10-10T17:57:12Z",
+    "url": "https://arxiv.org/abs/2310.06825"
+  },
+  {
+    "id": "2401.02954v2",
+    "title": "Deepseek LLM: Scaling Open-Source Language Models with Longtermism",
+    "authors": ["DeepSeek-AI"],
+    "abstract": "We present DeepSeek LLM, a series of open-source language models ranging from 7B to 67B parameters, trained from scratch on a massive 2T token dataset. DeepSeek LLM achieves top-tier performance among open-source models while maintaining full transparency about our training data, model architecture, and training process.",
+    "published": "2024-01-05T17:41:29Z",
+    "url": "https://arxiv.org/abs/2401.02954"
+  },
+  {
+    "id": "2308.12950v3",
+    "title": "Code Llama: Open Foundation Models for Code",
+    "authors": ["Baptiste Rozière", "Jonas Gehring", "Fabian Gloeckle", "Sten Sootla", "et al."],
+    "abstract": "We release Code Llama, a family of large language models for code based on Llama 2 providing state-of-the-art performance among open models. Code Llama models provide stable generations with up to 100K tokens of context and support infilling capabilities out of the box. We release three sizes (7B, 13B, 34B) as well as specialized variants for Python and instruction following.",
+    "published": "2023-08-24T17:39:13Z",
+    "url": "https://arxiv.org/abs/2308.12950"
+  },
+  {
+    "id": "2312.11805v3",
+    "title": "Gemini: A Family of Highly Capable Multimodal Models",
+    "authors": ["Gemini Team", "Google"],
+    "abstract": "We present Gemini, a family of highly capable multimodal models developed at Google. Gemini models are trained jointly across image, audio, video, and text data for the purpose of building a model with both strong generalist capabilities across modalities and specialized capabilities within specific domains.",
+    "published": "2023-12-19T00:56:12Z",
+    "url": "https://arxiv.org/abs/2312.11805"
+  },
+  {
+    "id": "2310.12931v2",
+    "title": "Llemma: An Open Language Model For Mathematics",
+    "authors": ["Zhangir Azerbayev", "Hailey Schoelkopf", "Keiran Paster", "Marco Dos Santos", "et al."],
+    "abstract": "We present Llemma, a large language model for mathematics. We continue pretraining Code Llama on the Proof-Pile-2, a mixture of scientific papers, web data containing mathematics, and mathematical code. Llemma outperforms all known open base models on mathematical benchmarks and is capable of tool use and formal theorem proving.",
+    "published": "2023-10-19T17:55:43Z",
+    "url": "https://arxiv.org/abs/2310.12931"
+  },
+  {
+    "id": "2309.05463v2",
+    "title": "Textbooks Are All You Need II: phi-1.5 technical report",
+    "authors": ["Yuanzhi Li", "Sébastien Bubeck", "Ronen Eldan", "Allie Del Giorno", "Suriya Gunasekar", "Yin Tat Lee"],
+    "abstract": "We present phi-1.5, a 1.3B parameter model trained on a dataset of 'textbook-quality' data. phi-1.5 exhibits near state-of-the-art performance on Python coding among models with less than 10B parameters and exceeds comparable models on reasoning benchmarks. Our work demonstrates the importance of data quality over data quantity.",
+    "published": "2023-09-11T15:38:47Z",
+    "url": "https://arxiv.org/abs/2309.05463"
+  },
+  {
+    "id": "2401.10020v1",
+    "title": "A Survey of Resource-efficient LLM and Multimodal Foundation Models",
+    "authors": ["Mengwei Xu", "Wangsong Yin", "Dongqi Cai", "Rongjie Yi", "et al."],
+    "abstract": "This survey provides a comprehensive review of resource-efficient techniques for large language models and multimodal foundation models. We systematically categorize existing methods into model compression, efficient architecture design, and system-level optimizations. We also discuss hardware-software co-design approaches and deployment strategies for edge devices.",
+    "published": "2024-01-18T14:08:17Z",
+    "url": "https://arxiv.org/abs/2401.10020"
+  },
+  {
+    "id": "2403.08295v2",
+    "title": "Scaling Instructable Agents Across Many Simulated Worlds",
+    "authors": ["SIMA Team", "Google DeepMind"],
+    "abstract": "We present SIMA, a Scalable Instructable Multiworld Agent that can follow natural language instructions to accomplish tasks across a variety of video game environments. SIMA is trained on diverse video game environments and can generalize to new games zero-shot. Our work demonstrates the potential for building generalist embodied AI agents.",
+    "published": "2024-03-13T13:43:22Z",
+    "url": "https://arxiv.org/abs/2403.08295"
+  }
+]

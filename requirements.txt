@@ -1,0 +1,8 @@
+# Core dependencies for the workshop
+openai>=1.0.0           # OpenAI-compatible API client (works with many providers)
+arxiv>=2.1.0            # ArXiv paper search
+python-dotenv>=1.0.0    # Environment variable loading
+
+# Notebook support
+jupyter>=1.0.0          # Jupyter notebooks for interactive demos
+ipykernel>=6.0.0        # Kernel for Jupyter
