@@ -43,7 +43,7 @@ cp .env.example .env
 
 ### 2. Get a Doubleword API Key
 
-1. Sign up at https://app.doubleword.com
+1. Sign up at https://app.doubleword.ai
 2. Create an API key and save it
 3. Add your API key to the `.env` file
 
@@ -90,12 +90,12 @@ arxiv-agent-workshop/
 |----------|-------------|
 | `OPENAI_API_KEY` | Your Doubleword API key |
 | `OPENAI_BASE_URL` | Doubleword API URL (default: `https://api.doubleword.ai/v1`) |
-| `MODEL_NAME` | Model to use (default: `gpt-4o-mini`) |
+| `MODEL_NAME` | Model to use (default: `=Qwen/Qwen3-VL-30B-A3B-Instruct-FP8`) |
 
 ## Requirements
 
 - Python 3.9+
-- Doubleword API key (sign up at https://app.doubleword.com)
+- Doubleword API key (sign up at https://app.doubleword.ai)
 
 ## Workshop Flow
 
