@@ -6,3 +6,7 @@ python-dotenv>=1.0.0    # Environment variable loading
 # Notebook support
 jupyter>=1.0.0          # Jupyter notebooks for interactive demos
 ipykernel>=6.0.0        # Kernel for Jupyter
+ipywidgets>=8.0.0       # Interactive widgets for feedback UI
+
+# PDF processing for deep analysis
+pymupdf>=1.23.0         # PDF text extraction (import as 'fitz')
