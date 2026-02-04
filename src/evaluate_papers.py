@@ -99,7 +99,8 @@ INSTRUCTIONS:
 Score this paper's relevance to the team on a scale of 0-10.
 - 0-3: Not relevant
 - 4-6: Somewhat relevant
-- 7-10: Highly relevant, team should read this
+- 7: Borderline - might be relevant, needs closer look
+- 8-10: Highly relevant, team should read this
 
 Respond with ONLY valid JSON in this exact format:
 {{
@@ -161,7 +162,7 @@ def create_batch_file(
     return output_path
 
 
-def submit_batch(client: OpenAI, input_file: str) -> str:
+def submit_batch(client: OpenAI, input_file: str, completion_window: str = "24h") -> str:
     """
     Submit a batch job to the OpenAI-compatible API.
 
@@ -171,6 +172,7 @@ def submit_batch(client: OpenAI, input_file: str) -> str:
     Args:
         client: OpenAI API client (or compatible client)
         input_file: Path to the JSONL batch file
+        completion_window: SLA for batch completion (e.g., "1h", "24h")
 
     Returns:
         Batch ID for tracking
@@ -193,7 +195,7 @@ def submit_batch(client: OpenAI, input_file: str) -> str:
     batch = client.batches.create(
         input_file_id=uploaded_file.id,
         endpoint="/v1/chat/completions",
-        completion_window="24h"  # Must complete within 24 hours
+        completion_window=completion_window
     )
 
     return batch.id
@@ -348,6 +350,7 @@ def evaluate_papers_batch(
     api_key: str = None,
     base_url: str = None,
     poll_interval: int = 10,
+    completion_window: str = "1h",
     verbose: bool = True
 ) -> list[dict]:
     """
@@ -366,6 +369,7 @@ def evaluate_papers_batch(
         api_key: API key (default: from OPENAI_API_KEY env var)
         base_url: Base URL for OpenAI-compatible API (default: from OPENAI_BASE_URL env var)
         poll_interval: Seconds between status checks
+        completion_window: SLA for batch completion (e.g., "1h", "24h")
         verbose: Whether to print progress
 
     Returns:
@@ -404,7 +408,7 @@ def evaluate_papers_batch(
         print(f"Submitting batch of {len(papers)} papers...")
 
     # Submit and wait
-    batch_id = submit_batch(client, batch_file)
+    batch_id = submit_batch(client, batch_file, completion_window)
 
     if verbose:
         print(f"Batch ID: {batch_id}")
@@ -460,6 +464,232 @@ def merge_results_with_papers(
     merged.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
 
     return merged
+
+
+def create_reevaluation_prompt(paper: dict, full_text: str, team_profile: dict = None) -> str:
+    """
+    Create a prompt to re-evaluate a paper using its full text.
+
+    This is used for borderline papers (score=7) where the abstract
+    wasn't clear enough to make a confident judgment.
+    """
+
+    if team_profile is None:
+        team_profile = TEAM_PROFILE
+
+    interests_text = "\n".join(f"  - {item}" for item in team_profile['interests'])
+
+    # Truncate full text if too long (keep first ~8000 chars)
+    if len(full_text) > 8000:
+        full_text = full_text[:8000] + "\n\n[... truncated for length ...]"
+
+    prompt = f"""You previously evaluated this paper based on its abstract and gave it a score of {paper.get('relevance_score', 7)}.
+
+Your initial assessment: "{paper.get('why_relevant', 'Borderline relevance')}"
+
+Now you have access to the FULL PAPER TEXT. Re-evaluate whether this paper is relevant to the team.
+
+TEAM INTERESTS:
+{interests_text}
+
+PAPER TITLE: {paper['title']}
+
+FULL PAPER TEXT:
+{full_text}
+
+---
+
+Based on the full paper content, provide a REVISED score and assessment.
+The score may go UP (if the paper is more relevant than the abstract suggested) or DOWN (if it's less relevant).
+
+Respond with ONLY valid JSON:
+{{
+    "revised_score": <integer 0-10>,
+    "key_insight": "<what you learned from reading the full paper>",
+    "why_revised": "<why the score changed (or stayed the same)>"
+}}"""
+
+    return prompt
+
+
+def create_reevaluation_batch_file(
+    papers_with_text: list[dict],
+    model: str,
+    output_path: str = "reevaluation_batch.jsonl",
+    team_profile: dict = None
+) -> str:
+    """
+    Create a JSONL batch file for re-evaluating papers with full text.
+
+    Args:
+        papers_with_text: List of paper dicts with 'full_text' key
+        model: Model name
+        output_path: Where to save the JSONL file
+        team_profile: Optional custom team profile
+
+    Returns:
+        Path to the created file
+    """
+
+    with open(output_path, 'w') as f:
+        for paper in papers_with_text:
+            if not paper.get('full_text'):
+                continue
+
+            request = {
+                "custom_id": paper['id'],
+                "method": "POST",
+                "url": "/v1/chat/completions",
+                "body": {
+                    "model": model,
+                    "max_tokens": 500,
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": create_reevaluation_prompt(
+                                paper, paper['full_text'], team_profile
+                            )
+                        }
+                    ]
+                }
+            }
+            f.write(json.dumps(request) + '\n')
+
+    return output_path
+
+
+def reevaluate_papers_batch(
+    papers_with_text: list[dict],
+    model: str = None,
+    team_profile: dict = None,
+    api_key: str = None,
+    base_url: str = None,
+    poll_interval: int = 10,
+    completion_window="1h",
+    verbose: bool = True
+) -> list[dict]:
+    """
+    Re-evaluate multiple papers using the Batch API.
+
+    Args:
+        papers_with_text: Papers with 'full_text' from PDF extraction
+        model: Model name (default: from MODEL_NAME env var)
+        team_profile: Custom team profile
+        api_key: API key
+        base_url: Base URL for API
+        poll_interval: Seconds between status checks
+        completion_window: SLA for submitting the batch api 
+        verbose: Print progress
+
+    Returns:
+        List of re-evaluation results with paper_id, revised_score, etc.
+    """
+
+    if model is None:
+        model = os.getenv("MODEL_NAME", "gpt-4o-mini")
+
+    # Filter to papers that have full text
+    papers_to_eval = [p for p in papers_with_text if p.get('full_text')]
+
+    if not papers_to_eval:
+        if verbose:
+            print("No papers with full text to re-evaluate")
+        return []
+
+    # Create client
+    client_kwargs = {}
+    if api_key:
+        client_kwargs['api_key'] = api_key
+    if base_url:
+        client_kwargs['base_url'] = base_url
+
+    client = OpenAI(**client_kwargs)
+
+    # Create batch file
+    batch_file = "reevaluation_batch.jsonl"
+    create_reevaluation_batch_file(papers_to_eval, model, batch_file, team_profile)
+
+    if verbose:
+        print(f"Submitting batch of {len(papers_to_eval)} papers for re-evaluation...")
+
+    # Submit and wait
+    batch_id = submit_batch(client, batch_file, completion_window)
+
+    if verbose:
+        print(f"Batch ID: {batch_id}")
+        print("Waiting for completion...")
+
+    results = wait_for_batch(client, batch_id, poll_interval, verbose)
+
+    # Clean up
+    if os.path.exists(batch_file):
+        os.remove(batch_file)
+
+    # Parse results - they have revised_score instead of relevance_score
+    parsed_results = []
+    for r in results:
+        parsed_results.append({
+            'paper_id': r.get('paper_id'),
+            'revised_score': r.get('revised_score'),
+            'key_insight': r.get('key_insight'),
+            'why_revised': r.get('why_revised')
+        })
+
+    return parsed_results
+
+
+def reevaluate_paper(
+    paper: dict,
+    full_text: str,
+    model: str = None,
+    team_profile: dict = None,
+    api_key: str = None,
+    base_url: str = None
+) -> dict:
+    """
+    Re-evaluate a single borderline paper using its full text.
+    For batch processing, use reevaluate_papers_batch() instead.
+
+    Args:
+        paper: Paper dict with title, relevance_score, etc.
+        full_text: Extracted text from the PDF
+        model: Model to use
+        team_profile: Team interests
+        api_key: API key
+        base_url: API base URL
+
+    Returns:
+        Dict with revised_score, key_insight, why_revised
+    """
+
+    if model is None:
+        model = os.getenv("MODEL_NAME", "gpt-4o-mini")
+
+    client_kwargs = {}
+    if api_key:
+        client_kwargs['api_key'] = api_key
+    if base_url:
+        client_kwargs['base_url'] = base_url
+
+    client = OpenAI(**client_kwargs)
+
+    prompt = create_reevaluation_prompt(paper, full_text, team_profile)
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=500
+    )
+
+    content = response.choices[0].message.content
+    result = parse_json_response(content)
+
+    if result:
+        return result
+    else:
+        return {"revised_score": paper.get('relevance_score', 7),
+                "key_insight": "Failed to parse response",
+                "why_revised": "Error in re-evaluation"}
 
 
 def get_top_papers(
